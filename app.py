@@ -33,15 +33,33 @@ model_choice = st.sidebar.selectbox(
 # User Inputs
 # =======================
 age = st.number_input("Age", min_value=20, max_value=100, value=50)
-sex = st.selectbox("Sex (1 = Male, 0 = Female)", [0, 1])
-bp = st.number_input("Blood Pressure", min_value=80, max_value=200, value=120)
+
+sex = st.selectbox("Sex", ["Male", "Female"])
+sex = 1 if sex == "Male" else 0
+
+systolic_bp = st.number_input("Systolic Blood Pressure", min_value=80, max_value=200, value=120)
+diastolic_bp = st.number_input("Diastolic Blood Pressure", min_value=40, max_value=130, value=80)
+
 hr = st.number_input("Heart Rate", min_value=40, max_value=200, value=80)
-diabetes = st.selectbox("Diabetes (1 = Yes, 0 = No)", [0, 1])
-family_history = st.selectbox("Family History of Heart Disease (1 = Yes, 0 = No)", [0, 1])
-smoking = st.selectbox("Smoking (1 = Yes, 0 = No)", [0, 1])
-obesity = st.selectbox("Obesity (1 = Yes, 0 = No)", [0, 1])
-alcohol = st.selectbox("Alcohol Consumption (1 = Yes, 0 = No)", [0, 1])
-previous_hp = st.selectbox("Previous Heart Problems (1 = Yes, 0 = No)", [0, 1])
+
+diabetes = st.selectbox("Diabetes", ["Yes", "No"])
+diabetes = 1 if diabetes == "Yes" else 0
+
+family_history = st.selectbox("Family History of Heart Disease", ["Yes", "No"])
+family_history = 1 if family_history == "Yes" else 0
+
+smoking = st.selectbox("Smoking", ["Yes", "No"])
+smoking = 1 if smoking == "Yes" else 0
+
+obesity = st.selectbox("Obesity", ["Yes", "No"])
+obesity = 1 if obesity == "Yes" else 0
+
+alcohol = st.selectbox("Alcohol Consumption", ["Yes", "No"])
+alcohol = 1 if alcohol == "Yes" else 0
+
+previous_hp = st.selectbox("Previous Heart Problems", ["Yes", "No"])
+previous_hp = 1 if previous_hp == "Yes" else 0
+
 stress = st.number_input("Stress Level (0–10)", min_value=0, max_value=10, value=5)
 bmi = st.number_input("BMI", min_value=10.0, max_value=50.0, value=22.0, step=0.1)
 sleep = st.number_input("Sleep Hours Per Day", min_value=0, max_value=24, value=7)
@@ -49,10 +67,10 @@ sleep = st.number_input("Sleep Hours Per Day", min_value=0, max_value=24, value=
 # =======================
 # Prediction Logic
 # =======================
-features = np.array([[age, sex, bp, hr, diabetes, family_history, smoking,
-                      obesity, alcohol, previous_hp, stress, bmi, sleep]])
+features = np.array([[age, sex, systolic_bp, diastolic_bp, hr, diabetes, family_history,
+                      smoking, obesity, alcohol, previous_hp, stress, bmi, sleep]])
 
-# Apply scaling only to models that need it
+# Apply scaling only for LR, SVM, KNN
 if model_choice in ["Logistic Regression", "SVM", "KNN"]:
     features_scaled = scaler.transform(features)
 else:
